@@ -224,14 +224,13 @@ class CaptioningRNN(object):
         h0 = features.dot(W_proj) + b_proj
         start = (self._start * np.ones(N)).astype(np.int32)
         x = W_embed[start, :]
-
         h = h0
         c = 0
         for t in range(max_length):
             if self.cell_type == 'lstm':
                 h, c, _ = lstm_step_forward(x, h, c, Wx, Wh, b)
             else:
-                h, c, _ = rnn_step_forward(x, h, c, Wx, Wh, b)
+                h, _ = rnn_step_forward(x, h, Wx, Wh, b)
             y = h.dot(W_vocab) + b_vocab
             captions[:, t] = np.argmax(y, axis=1)
             x = W_embed[captions[:, t], :]
