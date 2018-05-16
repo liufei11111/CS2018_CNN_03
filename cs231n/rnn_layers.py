@@ -221,7 +221,7 @@ def word_embedding_backward(dout, cache):
     # HINT: Look up the function np.add.at                                       #
     ##############################################################################
     x, W = cache
-    dW = np.zeros(*W.shape)
+    dW = np.zeros(W.shape)
     np.add.at(dW, x, dout)
     ##############################################################################
     #                               END OF YOUR CODE                             #
