@@ -34,7 +34,9 @@ def rnn_step_forward(x, prev_h, Wx, Wh, b):
     # hidden state and any values you need for the backward pass in the next_h   #
     # and cache variables respectively.                                          #
     ##############################################################################
-    pass
+    h_1 = np.dot(x, Wx) + np.dot(prev_h, Wh) + b
+    next_h = np.tanh(h_1)
+    cache = (Wx, Wh, x, prev_h, h_1)
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
