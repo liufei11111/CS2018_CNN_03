@@ -156,11 +156,11 @@ def rnn_backward(dh, cache):
     dprev_h = 0
     for t in range(T-1, -1, -1):
         dh_ag = dh[:, t, :] + dprev_h
-        dx_step, dprev_h, dWx_step, dWh_step, db_step = rnn_step_backward(dh_ag, forward_steps_cache[t])
-        dWx += dWx_step
-        dWh += dWh_step
-        db += db_step
-        dx[:, t, :] = dx_step
+        dx_t, dprev_h, dWx_t, dWh_t, db_t = rnn_step_backward(dh_ag, forward_steps_cache[t])
+        dWx += dWx_t
+        dWh += dWh_t
+        db += db_t
+        dx[:, t, :] = dx_t
 
     dh0 = dprev_h
     ##############################################################################
@@ -421,11 +421,11 @@ def lstm_backward(dh, cache):
     dprev_c = np.zeros([N, H])
     for t in reversed(range(T)):
         dh_ag = dh[:, t, :] + dprev_h
-        dx_step, dprev_h, dprev_c, dWx_step, dWh_step, db_step = lstm_step_backward(dh_ag, dprev_c, forward_steps_cache[t])
-        dWx += dWx_step
-        dWh += dWh_step
-        db += db_step
-        dx[:, t, :] = dx_step
+        dx_t, dprev_h, dprev_c, dWx_t, dWh_t, db_t = lstm_step_backward(dh_ag, dprev_c, forward_steps_cache[t])
+        dWx += dWx_t
+        dWh += dWh_t
+        db += db_t
+        dx[:, t, :] = dx_t
 
     dh0 = dprev_h
     ##############################################################################

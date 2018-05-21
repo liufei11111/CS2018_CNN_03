@@ -141,15 +141,15 @@ class CaptioningRNN(object):
         # in your implementation, if needed.                                       #
         ############################################################################
         h0, cache_affine = affine_forward(features, W_proj, b_proj)
-        embedded_captions_in, cache_embed_in = word_embedding_forward(captions_in, W_embed)
+        captions_in_embedding, cache_embed_in = word_embedding_forward(captions_in, W_embed)
         if self.cell_type == 'lstm':
-            h, cache_rnn = lstm_forward(embedded_captions_in, h0, Wx, Wh, b)
+            h, cache_rnn = lstm_forward(captions_in_embedding, h0, Wx, Wh, b)
         else:
-            h, cache_rnn = rnn_forward(embedded_captions_in, h0, Wx, Wh, b)
-        y, cache_temporal = temporal_affine_forward(h, W_vocab, b_vocab)
+            h, cache_rnn = rnn_forward(captions_in_embedding, h0, Wx, Wh, b)
+        y, cache_t = temporal_affine_forward(h, W_vocab, b_vocab)
         loss, dout = temporal_softmax_loss(y, captions_out, mask)
 
-        dout, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dout, cache_temporal)
+        dout, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dout, cache_t)
         if self.cell_type == 'lstm':
             dout, dh0, grads['Wx'], grads['Wh'], grads['b'] = lstm_backward(dout, cache_rnn)
         else:
